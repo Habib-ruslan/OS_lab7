@@ -3,6 +3,11 @@
 #include <signal.h>
 #include <unistd.h>
 
+#define RESET   "\033["
+#define RED     "\033[31m"
+#define YELLOW  "\033[33m"
+#define GREEN   "\033[32m"
+
 const char alphabet[]="abcdefghijklmnopqrst";
 const int delay = 19;
 
@@ -37,7 +42,7 @@ void procthread1(void *arg)
     pthread_setcancelstate(PTHREAD_CANCEL_DISABLE, NULL); //запрет на отмену
     for (int i = 0; i <= delay; i++)
     {
-        printf("\033[%d;20H\033[33m", i + 1);
+        printf("%s%d;20H%s", RESET, i + 1, RED);
         for (int j = 0; j < 2*(intptr_t)arg; j++) printf("%c", alphabet[i]);
         printf("\n");
         usleep(1011000);
@@ -49,7 +54,7 @@ void procthread2(void *arg)
 {
     for (int i = 0; i <= delay; i++)
     {
-        printf("\033[%d;40H\033[31m", i+1);
+        printf("%s%d;40H%s", RESET, i+1, YELLOW);
         for (int j = 0; j < 2*(intptr_t)arg; j++) printf("%c", alphabet[i]);
         printf("\n");
         usleep(1022000);
@@ -69,14 +74,14 @@ void procthread3(void *arg)
         }
         if (i == 16) 
         {
-            printf("\033[%d;60H\033[35m", i+1);
+            printf("%s%d;60H%s", RESET, i+1, GREEN);
             for (int j = 0; j < 2*(intptr_t)arg; j++) 
             {
                 printf("%c", alphabet[i]);
             }
         }
         if (i < 12) {
-            printf("\033[%d;60H\033[35m", i+1);
+            printf("%s%d;60H%s", RESET, i+1, GREEN);
             for (int j = 0; j < 2*(intptr_t)arg; j++) 
             {
                 printf("%c", alphabet[i]);
